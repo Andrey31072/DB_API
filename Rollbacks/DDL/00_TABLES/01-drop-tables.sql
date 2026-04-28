@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS usuario_tarea;
+DROP TABLE IF EXISTS tarea;
+DROP TABLE IF EXISTS usuario;

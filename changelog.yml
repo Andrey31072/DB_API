@@ -1,0 +1,52 @@
+
+databaseChangeLog:
+  # Fase 1: Crear extensiones necesarias
+  - changeSet:
+      id: 00-extensions
+      author: jose
+      context: database-setup
+      labels: extensions
+      comments: "Crear extensiones de PostgreSQL necesarias"
+      changes:
+        - sqlFile:
+            path: Changes/DDL/00_EXTENCIONS/extencion.sql
+            relativeToChangelogFile: true
+            stripComments: true
+      rollback:
+        - sql: "DROP EXTENSION IF EXISTS pgcrypto;"
+
+  # Fase 2: Crear estructura (tablas)
+  - changeSet:
+      id: 01-create-tables
+      author: jose
+      context: database-setup
+      labels: ddl,structure
+      comments: "Crear todas las tablas necesarias"
+      failOnError: true
+      changes:
+        - sqlFile:
+            path: Changes/DDL/01_TABLES/01-ddl-tables.sql
+            relativeToChangelogFile: true
+            stripComments: true
+      rollback:
+        - sqlFile:
+            path: Rollbacks/DDL/00_TABLES/01-drop-tables.sql
+            relativeToChangelogFile: true
+
+  # Fase 3: Insertar datos iniciales
+  - changeSet:
+      id: 02-insert-data
+      author: jose
+      context: database-setup
+      labels: dml,data-seeding
+      comments: "Insertar datos iniciales"
+      failOnError: true
+      changes:
+        - sqlFile:
+            path: Changes/DML/00-INSERTS/02-dml-tables.sql
+            relativeToChangelogFile: true
+            stripComments: true
+      rollback:
+        - sqlFile:
+            path: Rollbacks/DML/00_INSERTS/02-drop-data.sql
+            relativeToChangelogFile: true

@@ -1,0 +1,33 @@
+# Liquibase - Archivos temporales e ignorados
+# ===========================================
+
+# Archivos de base de datos local (desarrollo)
+*.db
+*.sqlite
+
+# Logs de Liquibase
+liquibase.log
+
+# Archivos de respaldo automático
+*.bak
+*.backup
+
+# Configuración local (no subir credenciales)
+liquibase-local.properties
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# Directorios de build
+target/
+build/
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

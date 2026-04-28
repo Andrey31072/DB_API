@@ -1,0 +1,43 @@
+services:
+
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: tareas_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  liquibase:
+    image: liquibase/liquibase
+    container_name: liquibase_runner
+    depends_on:
+      db:
+         condition: service_healthy
+    volumes:
+      - ./LIQUIBASE:/liquibase/CHANGELOG
+      - ./LIQUIBASE/DRIVERS:/liquibase/lib
+    working_dir: /liquibase/CHANGELOG
+    command:
+      - "--url=jdbc:postgresql://db:5432/tareas_db"
+      - "--changeLogFile=changelog.yml"
+      - "--username=postgres"
+      - "--password=postgres"
+      - "update"
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
